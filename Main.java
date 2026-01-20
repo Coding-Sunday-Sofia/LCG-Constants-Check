@@ -45,7 +45,7 @@ public class Main {
         mMin = Long.parseLong(properties.getProperty("m.min", ""+(1L<<31)));
         mMax = Long.parseLong(properties.getProperty("m.max", ""+(1L<<32)));
 
-        sampleSize = Long.parseLong(properties.getProperty("sample.size", ""+1048576));
+        sampleSize = Long.parseLong(properties.getProperty("sample.size", ""+26214400));
 
         Set<String> tracking = new HashSet<>(Files.readAllLines(Paths.get("tracking.txt")));
 
@@ -62,7 +62,6 @@ public class Main {
             long x = 1;
             for (int i = 0; i < values.length; i+=4) {
                 x = (a * x + c) % m;
-                //TODO Is it little-endian?
                 values[i] = (byte)(x & 0xFF);
                 values[i+1] = (byte)((x>>8) & 0xFF);
                 values[i+2] = (byte)((x>>16) & 0xFF);
