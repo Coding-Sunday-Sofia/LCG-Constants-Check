@@ -50,15 +50,15 @@ public class Main {
         Set<String> tracking = new HashSet<>(Files.readAllLines(Paths.get("tracking.txt")));
 
         String ticker = "";
-        do {
-            a = aMin + ((Math.abs(PRNG.nextLong()) % (aMax - aMin + 1)));
-            c = cMin + ((Math.abs(PRNG.nextLong()) % (cMax - cMin + 1)));
-            m = mMin + ((Math.abs(PRNG.nextLong()) % (mMax - mMin + 1)));
-            ticker = String.format("%012d", a) + String.format("%012d", c) + String.format("%012d", m);
-        } while (tracking.contains(ticker));
         byte[] values = new byte[(int)sampleSize*4];
-
         while (true) {
+            do {
+                a = aMin + ((Math.abs(PRNG.nextLong()) % (aMax - aMin + 1)));
+                c = cMin + ((Math.abs(PRNG.nextLong()) % (cMax - cMin + 1)));
+                m = mMin + ((Math.abs(PRNG.nextLong()) % (mMax - mMin + 1)));
+                ticker = String.format("%012d", a) + String.format("%012d", c) + String.format("%012d", m);
+            } while (tracking.contains(ticker));
+
             long x = 1;
             for (int i = 0; i < values.length; i+=4) {
                 x = (a * x + c) % m;
