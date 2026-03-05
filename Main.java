@@ -11,7 +11,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
 import java.security.SecureRandom;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Properties;
 import java.util.Random;
@@ -81,9 +83,9 @@ public class Main {
             }
 
             /* Write generated numbers in a file. */
-            FileOutputStream output = (new FileOutputStream(ticker+".bin"));
-            output.write(values);
-            output.close();
+            try(FileOutputStream output = (new FileOutputStream(ticker+".bin"))) {
+                output.write(values);
+            }
 
             /* Runing Dieharder bundle. */
             ((new ProcessBuilder("dieharder", "-a", "-g", "201", "-f", ""+ticker+".bin").redirectOutput(new File(ticker+".log"))).start()).waitFor();
@@ -93,7 +95,7 @@ public class Main {
 
             /* Keep trakcing of the checked constants. */
             tracking.add(ticker);
-            Files.write(Paths.get("tracking.txt"), tracking);
+            Files.write(Paths.get("tracking.txt"), new ArrayList<>(tracking), StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING);
         }
     }
 }
